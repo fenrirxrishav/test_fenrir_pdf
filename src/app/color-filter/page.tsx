@@ -37,7 +37,7 @@ interface PdfFile {
 
 const FILTERS = {
     none: { name: "None", color: rgb(0, 0, 0), blendMode: BlendMode.Normal, opacity: 0 },
-    'carbon-black': { name: "Carbon Black (Dark Mode)", color: rgb(0.95, 0.95, 0.95), blendMode: BlendMode.Difference, opacity: 1 },
+    'scan': { name: "Scan / High Contrast", color: rgb(1, 1, 1), blendMode: BlendMode.Difference, opacity: 1 },
     blueprint: { name: "Blueprint", color: rgb(0.9, 0.4, 0.2), blendMode: BlendMode.Luminosity, opacity: 0.6 },
     sepia: { name: "Sepia", color: rgb(0.9, 0.6, 0.3), blendMode: BlendMode.Color, opacity: 0.5 },
     grayscale: { name: "Grayscale", color: rgb(0.5, 0.5, 0.5), blendMode: BlendMode.Luminosity, opacity: 1 },
@@ -279,3 +279,4 @@ export default function ColorFilterPage() {
     </div>
   );
 }
+
