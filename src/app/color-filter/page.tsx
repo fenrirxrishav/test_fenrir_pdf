@@ -125,8 +125,31 @@ export default function ColorFilterPage() {
         for (const page of pages) {
             const { width, height } = page.getSize();
             
-            // Apply main color filter
-            if (filter !== 'none') {
+            if (filter === 'scan') {
+                 // This two-pass approach creates a high-contrast, "scanned" look
+                 // 1. ColorBurn darkens the dark parts
+                 page.drawRectangle({
+                    x: 0,
+                    y: 0,
+                    width,
+                    height,
+                    color: rgb(1, 1, 1),
+                    blendMode: BlendMode.ColorBurn,
+                    opacity: 1,
+                });
+                // 2. ColorDodge lightens the light parts, pushing grays to white
+                 page.drawRectangle({
+                    x: 0,
+                    y: 0,
+                    width,
+                    height,
+                    color: rgb(1, 1, 1),
+                    blendMode: BlendMode.ColorDodge,
+                    opacity: 1,
+                });
+
+            } else if (filter !== 'none') {
+                // Apply main color filter
                 page.drawRectangle({
                     x: 0,
                     y: 0,
@@ -138,8 +161,8 @@ export default function ColorFilterPage() {
                 });
             }
 
-            // Apply text brightness adjustment
-            if (textBrightness > 0) {
+            // Apply text brightness adjustment (not applicable for scan)
+            if (textBrightness > 0 && filter !== 'scan') {
                  page.drawRectangle({
                     x: 0,
                     y: 0,
@@ -172,6 +195,8 @@ export default function ColorFilterPage() {
     setIsLoading(false);
     toast({ title: "Cleared", description: "The file has been removed." });
   }
+
+  const isScanFilter = filter === 'scan';
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -230,9 +255,9 @@ export default function ColorFilterPage() {
                             </Select>
                         </div>
                         
-                        <div className="space-y-2">
+                        <div className={`space-y-2 transition-opacity ${isScanFilter ? 'opacity-50' : ''}`}>
                             <Label>Lighten Black Text ({Math.round(textBrightness * 100)}%)</Label>
-                            <Slider value={[textBrightness]} onValueChange={([v]) => setTextBrightness(v)} min={0} max={0.8} step={0.05} />
+                            <Slider disabled={isScanFilter} value={[textBrightness]} onValueChange={([v]) => setTextBrightness(v)} min={0} max={0.8} step={0.05} />
                              <p className="text-xs text-muted-foreground">Makes black text lighter (gray). Useful on dark backgrounds.</p>
                         </div>
 
@@ -258,14 +283,32 @@ export default function ColorFilterPage() {
                           <div 
                               className="absolute inset-0 pointer-events-none"
                               style={{
-                                  backgroundColor: `rgba(${FILTERS[filter].color.r * 255}, ${FILTERS[filter].color.g * 255}, ${FILTERS[filter].color.b * 255}, ${FILTERS[filter].opacity})`,
-                                  mixBlendMode: FILTERS[filter].blendMode.toLowerCase() as any,
+                                  backgroundColor: `rgba(${FILTERS[filter].color.r * 255}, ${FILTERS[filter].color.g * 255}, ${FILTERS[filter].color.b * 255}, ${isScanFilter ? 0 : FILTERS[filter].opacity})`,
+                                  mixBlendMode: isScanFilter ? undefined : FILTERS[filter].blendMode.toLowerCase() as any,
                               }}
                           />
+                          {isScanFilter && (
+                             <>
+                                <div 
+                                    className="absolute inset-0 pointer-events-none"
+                                    style={{
+                                        backgroundColor: `rgba(255,255,255,1)`,
+                                        mixBlendMode: 'color-burn',
+                                    }}
+                                />
+                                 <div 
+                                    className="absolute inset-0 pointer-events-none"
+                                    style={{
+                                        backgroundColor: `rgba(255,255,255,1)`,
+                                        mixBlendMode: 'color-dodge',
+                                    }}
+                                />
+                            </>
+                          )}
                            <div 
                               className="absolute inset-0 pointer-events-none"
                               style={{
-                                  backgroundColor: `rgba(255, 255, 255, ${textBrightness})`,
+                                  backgroundColor: `rgba(255, 255, 255, ${isScanFilter ? 0 : textBrightness})`,
                                   mixBlendMode: 'lighten',
                               }}
                           />
@@ -279,4 +322,3 @@ export default function ColorFilterPage() {
     </div>
   );
 }
-
