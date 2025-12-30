@@ -12,6 +12,7 @@ import {
   Image as ImageIcon,
   FileImage,
   Palette,
+  Sparkles,
 } from 'lucide-react';
 
 const siteConfig = {
@@ -110,10 +111,10 @@ const JsonLd = {
     },
     {
       "@type": "Action",
-      "name": "Color Filter PDF",
+      "name": "Clean PDF",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": `${siteConfig.url}/color-filter`
+        "urlTemplate": `${siteConfig.url}/clean`
       }
     }
   ],
@@ -187,10 +188,10 @@ export default function Home() {
                         icon={<FileImage size={24} />}
                       />
                        <FeatureCard
-                        href="/color-filter"
-                        title="Color Filter"
-                        description="Apply visual filters like sepia or dark mode."
-                        icon={<Palette size={24} />}
+                        href="/clean"
+                        title="Clean PDF"
+                        description="Remove dark spots & backgrounds from pages."
+                        icon={<Sparkles size={24} />}
                       />
                       <FeatureCard 
                         href="/merge" 
