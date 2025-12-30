@@ -26,6 +26,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  webpack: (config, { isServer }) => {
+    // Exclude canvas from being bundled on the server
+    if (isServer) {
+      config.externals.push('canvas');
+    }
+    return config;
+  }
 };
 
 export default pwaConfig(nextConfig);

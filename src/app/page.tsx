@@ -7,9 +7,9 @@ import {
   Baseline,
   Droplet,
   Grid,
-  Contrast,
-  Image as ImageIcon,
   RefreshCcw,
+  Image as ImageIcon,
+  FileImage,
 } from 'lucide-react';
 
 const siteConfig = {
@@ -64,6 +64,14 @@ const JsonLd = {
       "target": {
         "@type": "EntryPoint",
         "urlTemplate": `${siteConfig.url}/image-to-pdf`
+      }
+    },
+     {
+      "@type": "Action",
+      "name": "PDF to Image",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${siteConfig.url}/pdf-to-image`
       }
     },
     {
@@ -161,6 +169,12 @@ export default function Home() {
                         title="Image to PDF"
                         description="Convert images into a single PDF."
                         icon={<ImageIcon size={24} />}
+                      />
+                      <FeatureCard
+                        href="/pdf-to-image"
+                        title="PDF to Image"
+                        description="Convert each PDF page into an image."
+                        icon={<FileImage size={24} />}
                       />
                       <FeatureCard 
                         href="/merge" 
