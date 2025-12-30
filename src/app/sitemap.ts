@@ -1,3 +1,4 @@
+
 import { MetadataRoute } from 'next'
  
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -30,6 +31,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/pdf-to-image`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+     {
+      url: `${baseUrl}/color-filter`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.9,

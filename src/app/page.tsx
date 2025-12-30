@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { Header } from '@/components/Header';
 import type { Metadata } from 'next';
@@ -10,6 +11,7 @@ import {
   RefreshCcw,
   Image as ImageIcon,
   FileImage,
+  Palette,
 } from 'lucide-react';
 
 const siteConfig = {
@@ -105,6 +107,14 @@ const JsonLd = {
         "@type": "EntryPoint",
         "urlTemplate": `${siteConfig.url}/watermark`
       }
+    },
+    {
+      "@type": "Action",
+      "name": "Color Filter PDF",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${siteConfig.url}/color-filter`
+      }
     }
   ],
   "publisher": {
@@ -175,6 +185,12 @@ export default function Home() {
                         title="PDF to Image"
                         description="Convert each PDF page into an image."
                         icon={<FileImage size={24} />}
+                      />
+                       <FeatureCard
+                        href="/color-filter"
+                        title="Color Filter"
+                        description="Apply visual filters like sepia or dark mode."
+                        icon={<Palette size={24} />}
                       />
                       <FeatureCard 
                         href="/merge" 
